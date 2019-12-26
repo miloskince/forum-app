@@ -9,7 +9,6 @@ const StartPage = () => {
     useEffect(() => {
         getAllTopics()
         .then(data => {
-            console.log(data.topics)
             setTopics(data.topics)
         })
         
@@ -19,7 +18,7 @@ const StartPage = () => {
     return(
         <>
             <div>
-                <h2>All Topics</h2>
+                <h1>All Topics</h1>
             <ul>{topics.map((topic,timestamp) => <Themes key={topic.topic_id} topic={topic} timestamp={topic.timestamp} />)}</ul>
             </div>
         </>
