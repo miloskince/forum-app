@@ -1,46 +1,44 @@
 import React, { useState, useEffect } from "react";
-import { addTopic, getAllTopics, } from "../utilities/services";
+import { addTopic, getAllTopics, addTopicMessage, } from "../utilities/services";
 import Themes from "./themes";
 import { Link } from "react-router-dom";
 
-const Topics = ({ user , history, }) => {
+const Topics = ({ user }) => {
 
     const [title, setTopicHL] = useState('')
-    const [topicC, setTopicC] = useState('')
+    const [message, setTopicC] = useState('')
     const [topics, setTopics] = useState([])
+    
 
     let user_id = user.user_id
-    
-    
+    let username = user.username
 
     useEffect(() => {
         getAllTopics()
         .then(data => {
-            console.log(data.topics)
             setTopics(data.topics)
         })
       },[])
 
     function handleSubmit(){
         addTopic({user_id,title})
-        .then(data =>  {
-            console.log(data)
-            if(data.success) {
-                console.log(data)
-                history.push('/Topics')
-            }
-            else console.log("Topic not added")
-            console.log(data)
-            console.log(topicC)
-        })}
+        .then(data => {addTopicMessage(username, data.topic.topic_id , message).then(
+            data => console.log(data));getAllTopics()
+            .then(data => {
+                setTopics(data.topics)
+            })})
+        setTopicC('')
+        setTopicHL('')
+    }
+    
 
     return(
         <>
         <form>
-        <input type="text" placeholder="Topic Headline"  onInput={e => {
+        <input type="text" placeholder="Topic Headline" value = {title} onChange={e => {
                     setTopicHL(e.target.value)
                 }}/>
-                <input type="text" placeholder="Topic Content" onInput={e => {
+                <input type="text" placeholder="Topic Content" value ={message} onChange={e => {
                     setTopicC(e.target.value)
                 }}/>
                 <input type="submit" value="New Topic" onClick={e => {e.preventDefault();handleSubmit()}} />

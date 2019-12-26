@@ -7,7 +7,7 @@ const Themes = ({ topic }) => {
     let a = x.toLocaleDateString(topic.timestamp)
     return(
         <li>
-            {a}{b}-{topic.title}
+            {a}{b}-{topic.title.toString()}
         </li>
     )
 }

@@ -46,6 +46,19 @@ function addTopic(user_id,title){
     }).then(res => res.json())
 }
 
+function addTopicMessage(username, topic_id, message){
+    return fetch(`${BASEURL}${API}${MESSAGE}/`,{
+        headers:{
+            'Content-Type':'application/json; charset=utf-8'
+        },
+        method:'PUT',
+        body:JSON.stringify({
+            username : username,
+            topic_id : topic_id, 
+            message : message})
+    }).then(res => res.json())
+}
+
 function getAllMessages(){
     return fetch(`${BASEURL}${API}${MESSAGE}`)
         .then(res => res.json())
@@ -67,5 +80,6 @@ export {
     getUsername,
     getAllMessages,
     getAllTopics,
-    addTopic,getTopicMessage
+    addTopic,getTopicMessage,
+    addTopicMessage
 }

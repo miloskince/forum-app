@@ -17,7 +17,7 @@ const Main = ({ setUser, user }) => {
                 <Route path = "/Register" component = {(props) => <Register setUser={setUser} {...props} />} />
                 <Route path = "/Topics" component = {(props) => <Topics user={user} {...props} />} />
                 <Route path = "/profile/:user_id" component = {Profile} />
-                <Route path = "/message/:topic_id" component = {MessageList} />
+                <Route path = "/message/:topic_id" component = {(props) => <MessageList user={user} {...props}/> } />
             </Switch>
         </main>
     )

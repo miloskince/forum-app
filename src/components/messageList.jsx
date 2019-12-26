@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { getTopicMessage, getAllTopics } from "../utilities/services";
+import { getTopicMessage, getAllTopics, addTopicMessage } from "../utilities/services";
 import Message from "./message";
+import { Link } from "react-router-dom";
 
-const MessageList = ({ match }) => {
+const MessageList = ({ match , user, history }) => {
     const [topics, setTopics] = useState([])
-    const [reply,setReply] = useState([])
-    const [topicID] = useState(match.params.topic_id)
+    const [message,setReply] = useState([])
+    const [topic_id] = useState(match.params.topic_id)
     const [topic, setTopic] = useState([])
+    let username = user.username
 
     useEffect(() => {
         getAllTopics()
@@ -19,25 +21,32 @@ const MessageList = ({ match }) => {
     
 
     useEffect(() => {
-        getTopicMessage(topicID)
+        getTopicMessage(topic_id)
         .then(data => {
             console.log(data);
             setTopic(data.messages)
         })
-    },[topicID])
+    },[topic_id])
     
 
     function handleSubmit(){
-       console.log("hello",reply)
-    }
+        addTopicMessage(username, topic_id, message).then(data => {
+            console.log(data);
+            getTopicMessage(topic_id)
+            .then(data => {
+            console.log(data);
+            setTopic(data.messages)
+        })
+        setReply('')
+    })}
     
 
     return(
         <>
-        {topics.filter(x=> x.topic_id === topicID).map(x=><h1 key={x.topic_id}>{x.title}</h1>)}
+        {topics.filter(x=> x.topic_id === topic_id).map(x=><Link to={'/Topics'} key={x.topic_id}><h1 key={x.topic_id}>{x.title}</h1></Link>)}
         {topic.map((top) => <Message key={top.message_id} topicID={top.topic_id} topic={top} user_id={top.user_id} />)}
         <form>
-        <input type="text" placeholder="Enter Reply On Topic" required onInput={e => {
+        <input type="text" placeholder="Enter Reply On Topic" value={message} onChange={e => {
                     setReply(e.target.value)
                 }}/>
                <input type="submit" value="Reply" onClick={e => {e.preventDefault();handleSubmit()}} />

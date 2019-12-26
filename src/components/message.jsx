@@ -26,7 +26,7 @@ const Message = ({ topic,user_id }) => {
 
     return(
         <div>
-            <p>{b}{a} {topic.message} {topic.username}<Link to ={`/profile/${User.user_id}`} key={User.user_id} >{User.username}</Link></p>
+            <p>{b}{a} {topic.message.toString()} <Link to ={`/profile/${User.user_id}`} key={User.user_id} >{User.username}</Link></p>
         </div>
     )
 }

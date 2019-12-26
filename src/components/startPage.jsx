@@ -12,7 +12,9 @@ const StartPage = () => {
             console.log(data.topics)
             setTopics(data.topics)
         })
-      },[])
+        
+    },[])
+
 
     return(
         <>
